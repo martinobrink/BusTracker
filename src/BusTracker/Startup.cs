@@ -10,12 +10,18 @@ namespace BusTracker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services
+                .AddSignalR()
+                .Configure(options => { options.Hubs.EnableDetailedErrors = true; });
         }
 
         public void Configure(IApplicationBuilder app)
         {
-            // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
             app.UseMvc();
+
+            app.UseSignalR<RawConnection>("/raw-connection");
+            
             app.UseWelcomePage();
         }
     }
