@@ -4,34 +4,21 @@ using System.Linq;
 using BusTracker.Models;
 using Microsoft.AspNet.Mvc;
 
-// For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-
-namespace BusTracker.Controllers.Controllers
+namespace BusTracker.Controllers
 {
     [Route("api/[controller]")]
     public class VehicleController : Controller
     {
-
-        static readonly List<Vehicle> _vehicles = new List<Vehicle>()
-        {
-            new Vehicle
-            {
-                Id = "123456",
-                Name = "4A",
-                Description = "Sejeste bus i verden..."
-            }
-        };
-
         [HttpGet]
         public IEnumerable<Vehicle> Get()
         {
-            return _vehicles;
+            return MemoryDb.Vehicles;
         }
 
         [HttpGet("{id}")]
         public Vehicle Get(string id)
         {
-            return _vehicles.FirstOrDefault( x => x.Id == id);
+            return MemoryDb.Vehicles.FirstOrDefault( x => x.Id == id);
         }
 
         [HttpPut()]
@@ -44,7 +31,7 @@ namespace BusTracker.Controllers.Controllers
 
             if (!String.IsNullOrEmpty(vehicle.Id))
             {
-                var vehicleToUpdate = _vehicles.Single(x => x.Id == vehicle.Id);
+                var vehicleToUpdate = MemoryDb.Vehicles.Single(x => x.Id == vehicle.Id);
                 vehicleToUpdate.Name = vehicle.Name;
                 vehicleToUpdate.Description = vehicle.Description;
                 return new JsonResult(vehicleToUpdate);
@@ -57,7 +44,7 @@ namespace BusTracker.Controllers.Controllers
                     Name = vehicle.Name,
                     Description = vehicle.Description
                 };
-                _vehicles.Add(vehicleToCreate);
+                MemoryDb.Vehicles.Add(vehicleToCreate);
                 return new JsonResult(vehicleToCreate);
             }
         }
@@ -66,7 +53,7 @@ namespace BusTracker.Controllers.Controllers
         [HttpDelete()]
         public void DeleteAll()
         {
-            _vehicles.Clear();
+            MemoryDb.Vehicles.Clear();
         }
     }
 }
