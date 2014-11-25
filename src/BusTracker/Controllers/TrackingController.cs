@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BusTracker.Models;
 using Microsoft.AspNet.Mvc;
@@ -8,21 +9,24 @@ namespace BusTracker.Controllers
     [Route("api/[controller]")]
     public class TrackingController : Controller
     {
-        static readonly List<Tracking> _trackings = new List<Tracking>()
+        private static readonly Dictionary<string, Tracking> _trackings = new Dictionary<string, Tracking>
         {
-            new Tracking
             {
-                VehicleId = "123456", 
-                Heading = "240 degrees",
-                Latitude = "12.983749857",
-                Longitude = "11.42136574561"
+                "123456", new Tracking
+                {
+                    VehicleId = "123456",
+                    Heading = "240 degrees",
+                    Latitude = "12.983749857",
+                    Longitude = "11.42136574561",
+                    Timestamp = DateTime.UtcNow
+                }
             }
         };
 
         [HttpGet]
         public IEnumerable<Tracking> GetAllTrackings()
         {
-            return _trackings;
+            return _trackings.Values;
         }
 
         [HttpPut]
@@ -33,27 +37,29 @@ namespace BusTracker.Controllers
                 return new HttpStatusCodeResult(400);
             }
 
-            _trackings.Add(item);
+            item.Timestamp = DateTime.UtcNow;
+            _trackings[item.VehicleId] = item;
+
             return new HttpStatusCodeResult(200);
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteTracking(string id)
         {
-            var item = _trackings.FirstOrDefault(x => x.VehicleId == id);
-            if (item == null)
+            if (!_trackings.ContainsKey(id))
             {
                 return HttpNotFound();
             }
-            _trackings.Remove(item);
-            return new HttpStatusCodeResult(204); // 201 No Content
+
+            _trackings.Remove(id);
+            return new HttpStatusCodeResult(204);
         }
 
         [HttpDelete]
         public IActionResult DeleteAllTrackings()
         {
             _trackings.Clear();
-            return new HttpStatusCodeResult(204); // 201 No Content
+            return new HttpStatusCodeResult(204);
         }
     }
 }
