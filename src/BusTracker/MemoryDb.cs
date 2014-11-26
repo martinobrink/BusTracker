@@ -2,6 +2,8 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using BusTracker.Models;
+using BusTracker.DTOs;
+using System.Linq;
 
 namespace BusTracker
 {
@@ -28,5 +30,19 @@ namespace BusTracker
                 Description = "Sejeste bus i verden..."
             }
         };
+
+        public static IEnumerable<TrackingDTO> GetTrackingDTOs()
+        {
+            return Trackings.Values
+                .Select(x =>
+                new TrackingDTO
+                {
+                    HeadingDegrees = x.HeadingDegrees,
+                    Latitude = x.Latitude,
+                    Longitude = x.Longitude,
+                    Timestamp = x.Timestamp,
+                    VehicleData = Vehicles.FirstOrDefault(v => v.Id == x.VehicleId)
+                });
+        }
     }
 }

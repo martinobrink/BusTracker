@@ -70,7 +70,7 @@ namespace BusTracker.Controllers
         private void BroadcastTrackingUpdateToAllClients()
         {
             var hubContext = _connectionManager.GetHubContext<TrackingHub>();
-            hubContext.Clients.All.UpdateTrackings(MemoryDb.Trackings.Values);
+            hubContext.Clients.All.UpdateTrackings(MemoryDb.GetTrackingDTOs());
         }
     }
 }

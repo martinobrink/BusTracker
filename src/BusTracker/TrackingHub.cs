@@ -3,6 +3,7 @@ using Microsoft.AspNet.SignalR;
 using System.Collections.Generic;
 using BusTracker.Models;
 using Microsoft.AspNet.SignalR.Hubs;
+using BusTracker.DTOs;
 
 namespace BusTracker
 {
@@ -13,6 +14,6 @@ namespace BusTracker
 
     public interface ITrackingHub
     {
-        void UpdateTrackings(IEnumerable<Tracking> trackings);
+        void UpdateTrackings(IEnumerable<TrackingDTO> trackings);
     }
 }
