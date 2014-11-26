@@ -20,8 +20,8 @@ namespace BusTracker
         {
             app.UseMvc();
 
-            app.UseSignalR<RawConnection>("/raw-connection");
-            
+            app.UseSignalR();
+
             app.UseWelcomePage();
         }
     }
