@@ -12,9 +12,9 @@ namespace BusTracker
                 "123456", new Tracking
                 {
                     VehicleId = "123456",
-                    Heading = "240 degrees",
-                    Latitude = "12.983749857",
-                    Longitude = "11.42136574561",
+                    HeadingDegrees = 22,
+                    Latitude = 12.87463,
+                    Longitude = 11.98236,
                     Timestamp = DateTime.UtcNow
                 }
             }
@@ -28,6 +28,5 @@ namespace BusTracker
                 Description = "Sejeste bus i verden..."
             }
         };
-
     }
 }
